@@ -1,145 +1,146 @@
 ## Introduction
 
-## Ê¾Àı´úÂë
+## ç¤ºä¾‹ä»£ç 
 
 
 
 
 
-## Ö÷ÒªÁ÷³Ì£º
+## ä¸»è¦æµç¨‹ï¼š
 
 1. get bean class
-1. ÊµÀı»¯Bean: createBeanInstance(beanName, mbd, args)
-1. ºÏ²¢/×¢Èëbean£¬´¦Àí@Autowired£ºapplyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)
+1. å®ä¾‹åŒ–Bean: createBeanInstance(beanName, mbd, args)
+1. åˆå¹¶/æ³¨å…¥beanï¼Œå¤„ç†@Autowiredï¼šapplyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)
 	1. 
 	1. 
-1. ³õÊ¼»¯Bean: initializeBean(beanName, exposedObject, mbd)
+1. åˆå§‹åŒ–Bean: initializeBean(beanName, exposedObject, mbd)
 
-## Ô´Âë·ÖÎö£º
+## æºç åˆ†æï¼š
 
-	package org.springframework.beans.factory.support;
-	public abstract class AbstractAutowireCapableBeanFactory extends ...{
+```java
+package org.springframework.beans.factory.support;
+public abstract class AbstractAutowireCapableBeanFactory extends ...{
+	...
+	/**
+	 * Central method of this class: creates a bean instance,
+	 * populates the bean instance, applies post-processors, etc.
+	 * mbd: xmlä¸­è¯¥beançš„æ‰€æœ‰é…ç½®
+	 * @see #doCreateBean
+	 */
+	Object doCreateBean(String beanName, RootBeanDefinition mbd, Object[] args){
+		// Instantiate the beanï¼Œåˆ©ç”¨åå°„è°ƒç”¨æ„é€ å‡½æ•°
+		BeanWrapper instanceWrapper = createBeanInstance(beanName, mbd, args);
+		final Object bean = instanceWrapper.getWrappedInstance();
+
+		// Allow post-processors to modify the merged bean definition.
+		// åˆå¹¶å¤„ç†BeanDefinitionï¼Œæ¯”å¦‚@Autowiredæ³¨é‡Šçš„å†…éƒ¨bean
+		applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
+
+		// Initialize the bean instance.
+		populateBean(beanName, mbd, instanceWrapper);  // è¿™é‡Œä¼šcreate
+		Object exposedObject = initializeBean(beanName, bean, mbd);
 		...
-		/**
-		 * Central method of this class: creates a bean instance,
-		 * populates the bean instance, applies post-processors, etc.
-		 * mbd: xmlÖĞ¸ÃbeanµÄËùÓĞÅäÖÃ
-		 * @see #doCreateBean
-		 */
-		Object doCreateBean(String beanName, RootBeanDefinition mbd, Object[] args){
-			// Instantiate the bean£¬ÀûÓÃ·´Éäµ÷ÓÃ¹¹Ôìº¯Êı
-			BeanWrapper instanceWrapper = createBeanInstance(beanName, mbd, args);
-			final Object bean = instanceWrapper.getWrappedInstance();
-			
-			// Allow post-processors to modify the merged bean definition.
-			// ºÏ²¢´¦ÀíBeanDefinition£¬±ÈÈç@Autowired×¢ÊÍµÄÄÚ²¿bean
-			applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
-			
-			// Initialize the bean instance.
-			populateBean(beanName, mbd, instanceWrapper);  // ÕâÀï»ácreate
-			Object exposedObject = initializeBean(beanName, bean, mbd);
-			...
-			
-			return exposedObject;
-		}
-		
-		void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
-			for (BeanPostProcessor bp : getBeanPostProcessors()) {
-				if (bp instanceof MergedBeanDefinitionPostProcessor) {
-					MergedBeanDefinitionPostProcessor bdp = (MergedBeanDefinitionPostProcessor) bp;
-					bdp.postProcessMergedBeanDefinition(mbd, beanType, beanName);
-				}
+
+		return exposedObject;
+	}
+
+	void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
+		for (BeanPostProcessor bp : getBeanPostProcessors()) {
+			if (bp instanceof MergedBeanDefinitionPostProcessor) {
+				MergedBeanDefinitionPostProcessor bdp = (MergedBeanDefinitionPostProcessor) bp;
+				bdp.postProcessMergedBeanDefinition(mbd, beanType, beanName);
 			}
 		}
-		
+	}
+
+}
+
+
+package org.springframework.beans.factory.annotation;
+public class AutowiredAnnotationBeanPostProcessor extends ...{
+	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
+		InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);
+		metadata.checkConfigMembers(beanDefinition);
 	}
 
 
-	package org.springframework.beans.factory.annotation;
-	public class AutowiredAnnotationBeanPostProcessor extends ...{
-		public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
-			InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);
-			metadata.checkConfigMembers(beanDefinition);
-		}
-		
+	private InjectionMetadata findAutowiringMetadata(String beanName, Class<?> clazz, PropertyValues pvs) {
+		...
+		InjectionMetadata  metadata = buildAutowiringMetadata(clazz); // !!!!!!!!
+		return metadata;
+	}
 
-		private InjectionMetadata findAutowiringMetadata(String beanName, Class<?> clazz, PropertyValues pvs) {
-			...
-			InjectionMetadata  metadata = buildAutowiringMetadata(clazz); // !!!!!!!!
-			return metadata;
-		}
 
-		
-		
-		private InjectionMetadata buildAutowiringMetadata(Class<?> clazz) {
-			LinkedList<InjectionMetadata.InjectedElement> elements = new LinkedList<>();
-			Class<?> targetClass = clazz;
 
-			do {
-				final LinkedList<InjectionMetadata.InjectedElement> currElements = new LinkedList<>();
+	private InjectionMetadata buildAutowiringMetadata(Class<?> clazz) {
+		LinkedList<InjectionMetadata.InjectedElement> elements = new LinkedList<>();
+		Class<?> targetClass = clazz;
 
-				ReflectionUtils.doWithLocalFields(targetClass, field -> {
-					AnnotationAttributes ann = findAutowiredAnnotation(field); //!!!!!!
-					if (ann != null) {
-						if (Modifier.isStatic(field.getModifiers())) {
-							if (logger.isWarnEnabled()) {
-								logger.warn("Autowired annotation is not supported on static fields: " + field);
-							}
-							return;
+		do {
+			final LinkedList<InjectionMetadata.InjectedElement> currElements = new LinkedList<>();
+
+			ReflectionUtils.doWithLocalFields(targetClass, field -> {
+				AnnotationAttributes ann = findAutowiredAnnotation(field); //!!!!!!
+				if (ann != null) {
+					if (Modifier.isStatic(field.getModifiers())) {
+						if (logger.isWarnEnabled()) {
+							logger.warn("Autowired annotation is not supported on static fields: " + field);
 						}
-						boolean required = determineRequiredStatus(ann);
-						currElements.add(new AutowiredFieldElement(field, required));
-					}
-				});
-
-				ReflectionUtils.doWithLocalMethods(targetClass, method -> {
-					Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
-					if (!BridgeMethodResolver.isVisibilityBridgeMethodPair(method, bridgedMethod)) {
 						return;
 					}
-					AnnotationAttributes ann = findAutowiredAnnotation(bridgedMethod);
-					if (ann != null && method.equals(ClassUtils.getMostSpecificMethod(method, clazz))) {
-						if (Modifier.isStatic(method.getModifiers())) {
-							if (logger.isWarnEnabled()) {
-								logger.warn("Autowired annotation is not supported on static methods: " + method);
-							}
-							return;
-						}
-						if (method.getParameterCount() == 0) {
-							if (logger.isWarnEnabled()) {
-								logger.warn("Autowired annotation should only be used on methods with parameters: " +
-										method);
-							}
-						}
-						boolean required = determineRequiredStatus(ann);
-						PropertyDescriptor pd = BeanUtils.findPropertyForMethod(bridgedMethod, clazz);
-						currElements.add(new AutowiredMethodElement(method, required, pd));
-					}
-				});
-
-				elements.addAll(0, currElements);
-				targetClass = targetClass.getSuperclass();
-			}
-			while (targetClass != null && targetClass != Object.class);
-
-			return new InjectionMetadata(clazz, elements);
-		}
-		
-		//
-		private AnnotationAttributes findAutowiredAnnotation(AccessibleObject ao) {
-			if (ao.getAnnotations().length > 0) {
-				for (Class<? extends Annotation> type : this.autowiredAnnotationTypes) {
-					AnnotationAttributes attributes = AnnotatedElementUtils.getMergedAnnotationAttributes(ao, type);  //Èç¹û¸ÃfieldÓĞ@Autowired×¢ÊÍ£¬ÄÇÃ´·µ»Ø{required=true}£¬·ñÔò·µ»Ønull
-					if (attributes != null) {
-						return attributes;
-					}
+					boolean required = determineRequiredStatus(ann);
+					currElements.add(new AutowiredFieldElement(field, required));
 				}
-			}
-			return null;
+			});
+
+			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
+				Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
+				if (!BridgeMethodResolver.isVisibilityBridgeMethodPair(method, bridgedMethod)) {
+					return;
+				}
+				AnnotationAttributes ann = findAutowiredAnnotation(bridgedMethod);
+				if (ann != null && method.equals(ClassUtils.getMostSpecificMethod(method, clazz))) {
+					if (Modifier.isStatic(method.getModifiers())) {
+						if (logger.isWarnEnabled()) {
+							logger.warn("Autowired annotation is not supported on static methods: " + method);
+						}
+						return;
+					}
+					if (method.getParameterCount() == 0) {
+						if (logger.isWarnEnabled()) {
+							logger.warn("Autowired annotation should only be used on methods with parameters: " +
+									method);
+						}
+					}
+					boolean required = determineRequiredStatus(ann);
+					PropertyDescriptor pd = BeanUtils.findPropertyForMethod(bridgedMethod, clazz);
+					currElements.add(new AutowiredMethodElement(method, required, pd));
+				}
+			});
+
+			elements.addAll(0, currElements);
+			targetClass = targetClass.getSuperclass();
 		}
-		
+		while (targetClass != null && targetClass != Object.class);
+
+		return new InjectionMetadata(clazz, elements);
 	}
 
+	//
+	private AnnotationAttributes findAutowiredAnnotation(AccessibleObject ao) {
+		if (ao.getAnnotations().length > 0) {
+			for (Class<? extends Annotation> type : this.autowiredAnnotationTypes) {
+				AnnotationAttributes attributes = AnnotatedElementUtils.getMergedAnnotationAttributes(ao, type);  //å¦‚æœè¯¥fieldæœ‰@Autowiredæ³¨é‡Šï¼Œé‚£ä¹ˆè¿”å›{required=true}ï¼Œå¦åˆ™è¿”å›null
+				if (attributes != null) {
+					return attributes;
+				}
+			}
+		}
+		return null;
+	}
 
-##debug¼¼ÇÉ
-¶ÔÓÚ@Autowired×¢ÊÍField£¬ÔÚAutowiredAnnotationBeanPostProcessor.AutowiredFieldElementÄÚ²¿ÀàµÄ¹¹Ôìº¯ÊıÖĞÉèÖÃ¶Ïµã¡£
+}
+```
+
+##debugæŠ€å·§
+å¯¹äº@Autowiredæ³¨é‡ŠFieldï¼Œåœ¨AutowiredAnnotationBeanPostProcessor.AutowiredFieldElementå†…éƒ¨ç±»çš„æ„é€ å‡½æ•°ä¸­è®¾ç½®æ–­ç‚¹ã€‚
