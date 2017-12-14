@@ -30,7 +30,7 @@
 
 
 
-###通过XML配置创建bean
+### 通过XML配置创建bean
 * 实例代码，见chapter 4
 * 源码1
 
@@ -44,31 +44,6 @@
 
 
 
-
-
-
-
-
-
-###@Controller
-
-
-
-## 疑问
-
-
-
-
-## chapter4: bean creation
-
-bean在new ClassPathXmlApplicationContext的时候，默认调用DefaultListableBeanFactory.preInstantiateSingletons()，创建bean。
-
-
-
-
-## chapter10: Bean 定义继承
-
-仅仅是继承配置。不要求java类本身的extends，但要属性重叠
 
 
 
