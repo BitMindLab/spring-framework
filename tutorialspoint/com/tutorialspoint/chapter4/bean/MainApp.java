@@ -14,6 +14,7 @@ public class MainApp {
 					"com/tutorialspoint/chapter4/bean/Beans.xml");
 		
 		HelloWorld obj = (HelloWorld) context.getBean("helloWorld");
+		//HelloWorld obj = (HelloWorld) context.getBean(HelloWorld.class);
 		obj.getMessage();
 		
 

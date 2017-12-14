@@ -1,8 +1,10 @@
 package com.tutorialspoint.chapter15.annotation.autowired.field;
 
 public class SpellChecker {
+	int q;
 	public SpellChecker() {
 		System.out.println("Inside SpellChecker constructor.");
+		q=6;
 	}
 
 	public void checkSpelling() {
