@@ -133,7 +133,7 @@ public class AutowiredAnnotationBeanPostProcessor extends ...{
 
 ```
 
-##debug技巧
+## debug技巧
 
 * 设置断点
 	* 对于@Autowired注释Field，在AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement内部类的构造函数中设置断点。
