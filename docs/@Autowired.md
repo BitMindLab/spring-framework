@@ -8,11 +8,11 @@
 
 ## 主要流程：
 
-1. 实例化RootBean，调用无参构造函数: createBeanInstance(beanName, mbd, args) 
-1. 合并/注入bean，处理@Autowired：applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)
-	1. 合并bean definition
-	1. 注入bean
-1. 初始化Bean: initializeBean(beanName, exposedObject, mbd)
+1. 实例化RootBean，调用无参构造函数:
+1. 合并BeanDefinition  (不创建bean)：查找RootBean中@Autowired注解信息，与xml中的BeanDefinition合并存入mbd
+1. 初始化RootBean: 
+	1. 根据mbd创建innerBean
+	1. 根据mbd初始化RootBean，包括调用set方法(针对具有public set方法的field)，暴力反射setField(针对@Autowired注解的Field)
 
 ## 源码分析：
 
