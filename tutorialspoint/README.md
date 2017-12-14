@@ -6,11 +6,14 @@
 * [中文pdf文档]()
 
 
+
+
+
 ## 目录
 
-|  chapter     |  简介 | 配置文件xml  | java代码   | inner bean | inner bean注入方式 | 备注|
-| :-------- | -----:| ----:|--------:|--------:|:--: |
-|  4  	  | 创建bean        |  &lt;property> | set  | 无 | - | 
+| chapter |  简介           | 配置文件xml    | java代码   | inner bean | inner bean注入方式 | 备注|
+| ------------- |:-------------:| -----:| :-------------:| -----:| -------------:| -----:|
+| 4  	  | 创建bean        |  &lt;property> | set  | 无 | - | 
 | 7       | Bean的作用域     | scope="singleton" or "prototype"| set |无 | - |  |
 | 8       | Bean的生命周期   | init-method=".." destroy-method=".."|set init destroy  | 无 | - |   |
 | 9       | Bean的后置处理器 |   | BeanPostProcessor实现类 | 无 | - |  |
