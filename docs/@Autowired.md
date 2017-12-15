@@ -11,9 +11,11 @@
 1. 合并BeanDefinition  (不创建bean)：查找RootBean中@Autowired注解信息，与xml中的BeanDefinition合并存入mbd
 1. 初始化RootBean: 
 	1. 根据mbd创建innerBean
-	1. 根据mbd初始化RootBean，包括调用set方法(针对具有public set方法的field)，暴力反射setField(针对@Autowired注解的Field)
+	1. 根据mbd初始化RootBean，包括**set方法**(针对具有public set方法的field)，**依赖注入**(针对@Autowired注解的Field，采用暴力反射setField)
 
 ## 源码分析：
+
+**整体架构**
 
 ```java
 package org.springframework.beans.factory.support;
@@ -66,6 +68,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends ...{
 
 }
 
+```
+
+**2. 合并BeanDefinition  (不创建bean)**
+
+```java
 
 package org.springframework.beans.factory.annotation;
 public class AutowiredAnnotationBeanPostProcessor extends ...{
@@ -129,9 +136,7 @@ public class AutowiredAnnotationBeanPostProcessor extends ...{
 }
 
 
-
-
-```
+'''
 
 ## debug技巧
 
