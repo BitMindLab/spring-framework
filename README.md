@@ -4,7 +4,7 @@
 
 ## tutorial
 
-* [tutorialspoint ](/tutorial)
+* [tutorialspoint ](/tutorialspoint)
 * [spring in action](/springinaction)
 
 
