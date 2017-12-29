@@ -2,7 +2,7 @@
 
 ## 示例代码
 
-见[com.tutorialspoint.chapter14.autowiring.byname](../tutorialspoint/com/tutorialspoint/chapter14/autowiring/byname/MainApp.java)
+见[com.tutorialspoint.chapter15.annotation.autowired](../tutorialspoint/com/tutorialspoint/chapter15/annotation/autowired/field/MainApp.java)
 
 
 ## 主要流程：
