@@ -15,13 +15,13 @@
    <!-- Definition for textEditor bean 
    byType: 根据class搜索bean，id可以任意
    byName: 根据bean id搜索bean，id必须要和变量名一致-->
-   <bean id="textEditors" class="com.tutorialspoint.chapter14.TextEditor" 
+   <bean id="textEditor" class="com.tutorialspoint.chapter14.autowiring.byname.TextEditor" 
       autowire="byName">
       <property name="name" value="Generic Text Editor" />
    </bean>
 
    <!-- Definition for spellChecker bean -->
-   <bean id="spellchecker" class="com.tutorialspoint.chapter14.SpellChecker">
+   <bean id="spellchecker" class="com.tutorialspoint.chapter14.autowiring.byname.SpellChecker">
    </bean>
 
 </beans>

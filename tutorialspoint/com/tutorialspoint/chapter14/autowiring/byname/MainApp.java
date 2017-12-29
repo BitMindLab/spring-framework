@@ -5,7 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class MainApp {
    public static void main(String[] args) {
       ApplicationContext context = 
-             new ClassPathXmlApplicationContext("com/tutorialspoint/chapter14/Beans.xml");
+             new ClassPathXmlApplicationContext("com/tutorialspoint/chapter14/autowiring/byname/Beans.xml");
       TextEditor te = (TextEditor) context.getBean("textEditor");
       te.spellCheck();
    }
