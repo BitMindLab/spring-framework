@@ -23,3 +23,23 @@ target/
 
 # SVN
 .svn/
+
+
+
+*.sw?
+.#*
+*#
+*~
+.classpath
+.project
+.settings
+bin
+build
+target
+dependency-reduced-pom.xml
+*.sublime-*
+/scratch
+.gradle
+README.html
+.idea
+*.iml
