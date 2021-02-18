@@ -7,7 +7,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>springboot</module>
-        <module>spring</module>
+        <module>spring-in-action</module>
+        <module>spring-tutorialspoint</module>
+        <module>Test</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -17,5 +19,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.0.0.RELEASE</version>
+        </dependency>
+
+    </dependencies>
 
 </project>

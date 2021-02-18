@@ -19,7 +19,7 @@ public class MainApp {
    public static void main(String[] args) {
 //      ApplicationContext context = new ClassPathXmlApplicationContext("com/tutorialspoint/chapter7/bean/scope/Beans.xml");
 //      ApplicationContext context = new ClassPathXmlApplicationContext("file:src/main/java/com/tutorialspoint/chapter7/bean/scope/Beans.xml");
-      ApplicationContext context = new ClassPathXmlApplicationContext("file:spring/tutorialspoint/src/main/java/com/tutorialspoint/chapter7/bean/scope/Beans.xml");
+      ApplicationContext context = new ClassPathXmlApplicationContext("file:spring-tutorialspoint/src/main/java/com/tutorialspoint/chapter7/bean/scope/Beans.xml");
       HelloWorld objA = (HelloWorld) context.getBean("helloWorld");
       objA.setMessage("I'm object A");
       objA.getMessage();
